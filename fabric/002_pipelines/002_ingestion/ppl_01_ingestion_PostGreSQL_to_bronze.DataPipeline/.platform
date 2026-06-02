@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "ppl_01_ingestion_PostGreSQL_to_bronze"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3f58088d-52b7-9c33-462d-43a0b9872c67"
+  }
+}

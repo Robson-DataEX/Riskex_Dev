@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Occupational Risk Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d99a795b-19d9-a608-4226-b78594597d3c"
+  }
+}

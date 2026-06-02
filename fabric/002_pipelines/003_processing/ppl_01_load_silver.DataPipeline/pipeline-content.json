@@ -1,0 +1,229 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "ExcelSource",
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            }
+          },
+          "datasetSettings": {
+            "type": "Excel",
+            "typeProperties": {
+              "location": {
+                "type": "LakehouseLocation",
+                "fileName": "config.xlsx"
+              },
+              "sheetName": "bronze_to_silver",
+              "firstRowAsHeader": true
+            },
+            "schema": [],
+            "linkedService": {
+              "name": "lh_config",
+              "properties": {
+                "type": "Lakehouse",
+                "typeProperties": {
+                  "artifactId": "67bff7c9-2fad-96e8-4972-ee6acad5c24c",
+                  "workspaceId": "00000000-0000-0000-0000-000000000000",
+                  "rootFolder": "Files"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.00:30:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "lookup_config",
+        "dependsOn": []
+      },
+      {
+        "type": "Filter",
+        "typeProperties": {
+          "items": {
+            "value": "@activity('lookup_config').output.value",
+            "type": "Expression"
+          },
+          "condition": {
+            "value": "@equals(item().enable_etl, '1')",
+            "type": "Expression"
+          }
+        },
+        "name": "filter_config",
+        "dependsOn": [
+          {
+            "activity": "lookup_config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "batchCount": 10,
+          "items": {
+            "value": "@activity('filter_config').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "5cd4f510-c76d-8253-4f06-d95e49316f1d",
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "parameters": {
+                  "source_container": {
+                    "value": {
+                      "value": "@item().source_container",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "source_directory": {
+                    "value": {
+                      "value": "@item().source_directory",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "source_file": {
+                    "value": {
+                      "value": "@item().source_file",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "merge_columns": {
+                    "value": {
+                      "value": "@item().merge_columns",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "target_container": {
+                    "value": {
+                      "value": "@item().target_container",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "target_directory": {
+                    "value": {
+                      "value": "@item().target_directory",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "table_name": {
+                    "value": {
+                      "value": "@item().table_name",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "partition_columns": {
+                    "value": {
+                      "value": "@item().partition_columns",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "write_table_model": {
+                    "value": {
+                      "value": "@if(\n    equals(pipeline().parameters.carga_full,'S')\n    ,'overwrite'\n    , item().write_table_model\n    )",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "apply_distinct": {
+                    "value": {
+                      "value": "@item().apply_distinct",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "table_type": {
+                    "value": {
+                      "value": "@item().table_type",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "workspace_id": {
+                    "value": {
+                      "value": "@pipeline().DataFactory",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                },
+                "sessionTag": "silver"
+              },
+              "policy": {
+                "timeout": "0.00:30:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "nb_silver",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "foreach_tables",
+        "dependsOn": [
+          {
+            "activity": "filter_config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "fb21cbea-07fb-a710-44f8-df757bba2ab6",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.00:30:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "nb_silver_transformation",
+        "dependsOn": [
+          {
+            "activity": "foreach_tables",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "carga_full": {
+        "type": "string",
+        "defaultValue": "S"
+      }
+    }
+  }
+}

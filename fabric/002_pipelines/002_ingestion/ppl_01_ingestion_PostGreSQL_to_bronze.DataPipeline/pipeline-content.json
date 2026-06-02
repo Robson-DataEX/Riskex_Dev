@@ -1,0 +1,220 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "ExcelSource",
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            }
+          },
+          "datasetSettings": {
+            "type": "Excel",
+            "typeProperties": {
+              "location": {
+                "type": "LakehouseLocation",
+                "fileName": "config.xlsx"
+              },
+              "sheetName": "source_to_bronze",
+              "firstRowAsHeader": true
+            },
+            "schema": [],
+            "linkedService": {
+              "name": "lh_config",
+              "properties": {
+                "type": "Lakehouse",
+                "typeProperties": {
+                  "artifactId": "67bff7c9-2fad-96e8-4972-ee6acad5c24c",
+                  "workspaceId": "00000000-0000-0000-0000-000000000000",
+                  "rootFolder": "Files"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.00:30:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "lookup_config",
+        "dependsOn": []
+      },
+      {
+        "type": "Filter",
+        "typeProperties": {
+          "items": {
+            "value": "@activity('lookup_config').output.value",
+            "type": "Expression"
+          },
+          "condition": {
+            "value": "@equals(item().enable_etl, '1')",
+            "type": "Expression"
+          }
+        },
+        "name": "filter_config",
+        "dependsOn": [
+          {
+            "activity": "lookup_config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "batchCount": 10,
+          "items": {
+            "value": "@activity('filter_config').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "AzurePostgreSqlSource",
+                  "query": {
+                    "value": "@concat('SELECT STRING_AGG(\n        CASE \n            WHEN data_type IN (''timestamp without time zone'', ''timestamp with time zone'') THEN \n                ''CASE WHEN \"'' || column_name || ''\" IN (''''infinity'''', ''''-infinity'''') THEN NULL ELSE \"'' || column_name || ''\" END AS \"'' || column_name || ''\"'' \n            WHEN data_type = ''money'' THEN \n                ''CAST(\"'' || column_name || ''\" AS NUMERIC(38,2)) AS \"'' || column_name || ''\"'' \n            ELSE \n                ''\"'' || column_name || ''\"'' \n        END, '', ''\n    ) AS resultado\nFROM information_schema.columns\nWHERE table_schema = ''public''\nAND table_name = ''', item().source_table_name, ''';')",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "AzurePostgreSqlTable",
+                  "version": "2.0",
+                  "schema": [],
+                  "externalReferences": {
+                    "connection": "@item().connection_id_fabric"
+                  },
+                  "annotations": []
+                },
+                "firstRowOnly": true
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "check_typing_Money",
+              "dependsOn": []
+            },
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "AzurePostgreSqlSource",
+                  "query": {
+                    "value": "@if(\n    equals(item().load_type, 'incremental'),\n    concat(\n        'SELECT ', activity('check_typing_Money').output.firstRow.resultado,\n        ' FROM \"', item().source_schema_name, '\".\"',\n        item().source_table_name, '\"',\n        ' WHERE ', item().watermark_column, ' > ''',\n        formatDateTime(\n            addDays(utcNow(), int(item().delta_days)),\n            'yyyy-MM-dd HH:mm:ss'\n        ),\n        ''''\n    ),\n    concat(\n        'SELECT ', activity('check_typing_Money').output.firstRow.resultado,\n        ' FROM \"', item().source_schema_name, '\".\"',\n        item().source_table_name, '\"'\n    )\n)",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00",
+                  "datasetSettings": {
+                    "type": "AzurePostgreSqlTable",
+                    "version": "2.0",
+                    "schema": [],
+                    "externalReferences": {
+                      "connection": "@item().connection_id_fabric"
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "ParquetSink",
+                  "formatSettings": {
+                    "type": "ParquetWriteSettings",
+                    "enableVertiParquet": true
+                  },
+                  "storeSettings": {
+                    "type": "AzureBlobStorageWriteSettings",
+                    "copyBehavior": "PreserveHierarchy"
+                  },
+                  "datasetSettings": {
+                    "type": "Parquet",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@item().directory_target",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(item().file_target, '.parquet')",
+                          "type": "Expression"
+                        }
+                      },
+                      "compressionCodec": "snappy"
+                    },
+                    "schema": [],
+                    "linkedService": {
+                      "name": "lh_bronze",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "d49ae41f-f37d-8f54-4927-69afcd2f8492",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": true,
+                    "treatBooleanAsNumber": false
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "file_upload",
+              "dependsOn": [
+                {
+                  "activity": "check_typing_Money",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "name": "foreach_tables",
+        "dependsOn": [
+          {
+            "activity": "filter_config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
