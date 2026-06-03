@@ -1,0 +1,184 @@
+table dim_unit
+	lineageTag: 1576d377-8462-4916-b7c0-a22e93293878
+	sourceLineageTag: [riscos].[dim_unit]
+
+	column UnitId
+		dataType: int64
+		formatString: 0
+		lineageTag: 2dcd2d2e-92d7-4018-b4ba-68c60bd6dc3d
+		sourceLineageTag: UnitId
+		summarizeBy: none
+		sourceColumn: UnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column HigherUnitId
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ba11f10-941d-4f1b-a67d-9f584ceaa278
+		sourceLineageTag: HigherUnitId
+		summarizeBy: count
+		sourceColumn: HigherUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level1
+		dataType: string
+		lineageTag: 6c841894-2827-465c-8b95-506b33828729
+		sourceLineageTag: Level1
+		summarizeBy: none
+		sourceColumn: Level1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level2
+		dataType: string
+		lineageTag: bff18c2c-800e-4c1a-9423-bcf28d378b2f
+		sourceLineageTag: Level2
+		summarizeBy: none
+		sourceColumn: Level2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level3
+		dataType: string
+		lineageTag: 1c001431-8c1a-4768-8d27-3b500f60611a
+		sourceLineageTag: Level3
+		summarizeBy: none
+		sourceColumn: Level3
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level4
+		dataType: string
+		lineageTag: aac4eff7-e181-4fc2-a4a1-c798956c13e6
+		sourceLineageTag: Level4
+		summarizeBy: none
+		sourceColumn: Level4
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level5
+		dataType: string
+		lineageTag: a4200104-d0c3-4102-b6dd-e2ccff964bf9
+		sourceLineageTag: Level5
+		summarizeBy: none
+		sourceColumn: Level5
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level6
+		dataType: string
+		lineageTag: 990d33ad-1972-48c2-94f0-9f0b89db3051
+		sourceLineageTag: Level6
+		summarizeBy: none
+		sourceColumn: Level6
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level7
+		dataType: string
+		lineageTag: 87ef1ac5-745d-418b-9af1-d10012c86389
+		sourceLineageTag: Level7
+		summarizeBy: none
+		sourceColumn: Level7
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level8
+		dataType: string
+		lineageTag: e7ae87d4-0d87-43c4-b98f-d2fead30f1c1
+		sourceLineageTag: Level8
+		summarizeBy: none
+		sourceColumn: Level8
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: d3f7fd95-35cf-4246-ada8-8be6241f4fc9
+		sourceLineageTag: Latitude
+		summarizeBy: sum
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 9920cee5-5c3b-42cb-bf35-59e55e9ad374
+		sourceLineageTag: Longitude
+		summarizeBy: sum
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LOTOMapExpired
+		dataType: int64
+		formatString: 0
+		lineageTag: 80efdb7b-51e9-445d-a570-a98ad0ba93e6
+		sourceLineageTag: LOTOMapExpired
+		summarizeBy: sum
+		sourceColumn: LOTOMapExpired
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecurityMapExpired
+		dataType: int64
+		formatString: 0
+		lineageTag: 4606216c-fff3-412e-886c-b98dd715fb56
+		sourceLineageTag: SecurityMapExpired
+		summarizeBy: sum
+		sourceColumn: SecurityMapExpired
+
+		annotation SummarizationSetBy = Automatic
+
+	column RiskWithoutAction
+		dataType: int64
+		formatString: 0
+		lineageTag: fcfc06c2-0927-4846-aaad-fc46701070e8
+		sourceLineageTag: RiskWithoutAction
+		summarizeBy: sum
+		sourceColumn: RiskWithoutAction
+
+		annotation SummarizationSetBy = Automatic
+
+	column insert_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 66c25917-1eae-449f-956d-12d9e978d461
+		sourceLineageTag: insert_date
+		summarizeBy: none
+		sourceColumn: insert_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 734177dc-7f7c-474d-9a7d-686503c1d3d2
+		sourceLineageTag: update_date
+		summarizeBy: none
+		sourceColumn: update_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column hash_row
+		dataType: string
+		lineageTag: 33aea447-46c2-4950-80a9-0b62500aee3c
+		sourceLineageTag: hash_row
+		summarizeBy: none
+		sourceColumn: hash_row
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_unit = entity
+		mode: directLake
+		source
+			entityName: dim_unit
+			schemaName: riscos
+			expressionSource: 'DirectLake - lh_gold'
+

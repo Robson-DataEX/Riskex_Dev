@@ -1,0 +1,86 @@
+table language_riskclass
+	lineageTag: 3ac78537-7399-4d36-b8f0-06be83776176
+	sourceLineageTag: [riscos].[language_riskclass]
+
+	column Id
+		dataType: int64
+		formatString: 0
+		lineageTag: ab115dc8-90f2-4a78-9df5-9dc05d4d46c0
+		sourceLineageTag: Id
+		summarizeBy: none
+		sourceColumn: Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ptBR
+		dataType: string
+		lineageTag: b75fc782-d27f-40f0-9d97-4b53de9ffda6
+		sourceLineageTag: ptBR
+		summarizeBy: none
+		sourceColumn: ptBR
+
+		annotation SummarizationSetBy = Automatic
+
+	column enUS
+		dataType: string
+		lineageTag: 7236c672-d6ae-4269-90d1-7cf5d76597a0
+		sourceLineageTag: enUS
+		summarizeBy: none
+		sourceColumn: enUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column esES
+		dataType: string
+		lineageTag: 0595c252-87ee-48da-87ba-d38c6ea2b2ec
+		sourceLineageTag: esES
+		summarizeBy: none
+		sourceColumn: esES
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tolerability
+		dataType: string
+		lineageTag: f2d83705-60cb-424a-9a86-05785b572914
+		sourceLineageTag: Tolerability
+		summarizeBy: none
+		sourceColumn: Tolerability
+
+		annotation SummarizationSetBy = Automatic
+
+	column insert_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3ec1b64e-db6f-4bb6-bf9e-bef88a8ad863
+		sourceLineageTag: insert_date
+		summarizeBy: none
+		sourceColumn: insert_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ba062f17-d8dd-4940-920e-05a1a1b22919
+		sourceLineageTag: update_date
+		summarizeBy: none
+		sourceColumn: update_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column hash_row
+		dataType: string
+		lineageTag: 626e08c1-fa0b-4ad4-bd02-63736b89851d
+		sourceLineageTag: hash_row
+		summarizeBy: none
+		sourceColumn: hash_row
+
+		annotation SummarizationSetBy = Automatic
+
+	partition language_riskclass = entity
+		mode: directLake
+		source
+			entityName: language_riskclass
+			schemaName: riscos
+			expressionSource: 'DirectLake - lh_gold'
+

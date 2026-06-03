@@ -1,0 +1,222 @@
+table fact_occupational_risk
+	lineageTag: 7999f314-0dc3-4020-b141-4e2e9e576fd2
+	sourceLineageTag: [riscos].[fact_occupational_risk]
+
+	column Id
+		dataType: int64
+		formatString: 0
+		lineageTag: 14bb7942-ce90-4718-852f-2bbb4493ae1e
+		sourceLineageTag: Id
+		summarizeBy: count
+		sourceColumn: Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitId
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b06d9db-198b-45d8-9c1b-e40dbe470e78
+		sourceLineageTag: UnitId
+		summarizeBy: none
+		sourceColumn: UnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClassId
+		dataType: int64
+		formatString: 0
+		lineageTag: 467377a9-8947-442e-9628-74ea35ba97d9
+		sourceLineageTag: ClassId
+		summarizeBy: none
+		sourceColumn: ClassId
+
+		annotation SummarizationSetBy = Automatic
+
+	column MitigatedClassId
+		dataType: int64
+		formatString: 0
+		lineageTag: fe53fe64-6fdc-4511-8559-cf9fd0599b72
+		sourceLineageTag: MitigatedClassId
+		summarizeBy: count
+		sourceColumn: MitigatedClassId
+
+		annotation SummarizationSetBy = Automatic
+
+	column LinearClassId
+		dataType: int64
+		formatString: 0
+		lineageTag: e14bd5f3-45d3-4d4c-9825-6c8149d1d2c8
+		sourceLineageTag: LinearClassId
+		summarizeBy: count
+		sourceColumn: LinearClassId
+
+		annotation SummarizationSetBy = Automatic
+
+	column LinearMitigatedClassId
+		dataType: int64
+		formatString: 0
+		lineageTag: 12177810-5265-4019-bda8-bc5d2a00fb17
+		sourceLineageTag: LinearMitigatedClassId
+		summarizeBy: count
+		sourceColumn: LinearMitigatedClassId
+
+		annotation SummarizationSetBy = Automatic
+
+	column LinearRiskScore
+		dataType: double
+		lineageTag: 196a229a-565e-4ca7-b318-b2ef6260ca15
+		sourceLineageTag: LinearRiskScore
+		summarizeBy: sum
+		sourceColumn: LinearRiskScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MitigatedLinearRiskScore
+		dataType: double
+		lineageTag: 38ee0e62-8b61-41fe-9e5e-5c741909a2c5
+		sourceLineageTag: MitigatedLinearRiskScore
+		summarizeBy: sum
+		sourceColumn: MitigatedLinearRiskScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProbabilityId
+		dataType: int64
+		formatString: 0
+		lineageTag: 32418af7-95c0-42d3-86cf-de1deb0b11a2
+		sourceLineageTag: ProbabilityId
+		summarizeBy: count
+		sourceColumn: ProbabilityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column MitigatedProbabilityId
+		dataType: int64
+		formatString: 0
+		lineageTag: 57ad30f3-459b-471d-9618-dde8f28f1ca1
+		sourceLineageTag: MitigatedProbabilityId
+		summarizeBy: count
+		sourceColumn: MitigatedProbabilityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SeverityId
+		dataType: int64
+		formatString: 0
+		lineageTag: 39afbba6-df52-43fc-a425-73da26613c1b
+		sourceLineageTag: SeverityId
+		summarizeBy: count
+		sourceColumn: SeverityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column HazardId
+		dataType: int64
+		formatString: 0
+		lineageTag: a71544ce-5681-479f-af11-111d2e5ce9fb
+		sourceLineageTag: HazardId
+		summarizeBy: count
+		sourceColumn: HazardId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 11b790eb-baa0-4538-b32c-2303e3291e3d
+		sourceLineageTag: CreationDate
+		summarizeBy: none
+		sourceColumn: CreationDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdateDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f6fbcdde-c207-48d0-912e-67e9047fcb05
+		sourceLineageTag: UpdateDate
+		summarizeBy: none
+		sourceColumn: UpdateDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EvaluationExpirationDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 75c091a9-fbfb-42ba-820b-5dfed8078663
+		sourceLineageTag: EvaluationExpirationDate
+		summarizeBy: none
+		sourceColumn: EvaluationExpirationDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column Eliminated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4853a89a-1505-46fb-bd06-0ea8ac05df99
+		sourceLineageTag: Eliminated
+		summarizeBy: none
+		sourceColumn: Eliminated
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: int64
+		formatString: 0
+		lineageTag: b14e59aa-4e62-4123-adac-9ef9834de3c8
+		sourceLineageTag: Status
+		summarizeBy: sum
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column OccupationalRiskHisId
+		dataType: int64
+		formatString: 0
+		lineageTag: 68ddb2ed-40e6-4164-85e0-508847e53525
+		sourceLineageTag: OccupationalRiskHisId
+		summarizeBy: count
+		sourceColumn: OccupationalRiskHisId
+
+		annotation SummarizationSetBy = Automatic
+
+	column insert_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fc260c63-45c8-4972-88a9-3bd1041c400b
+		sourceLineageTag: insert_date
+		summarizeBy: none
+		sourceColumn: insert_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d6af03ed-2440-4bbf-9e7d-e6600bcecae2
+		sourceLineageTag: update_date
+		summarizeBy: none
+		sourceColumn: update_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column hash_row
+		dataType: string
+		lineageTag: b5edf54e-8b78-4331-9e6d-ecc61c4371bc
+		sourceLineageTag: hash_row
+		summarizeBy: none
+		sourceColumn: hash_row
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_occupational_risk = entity
+		mode: directLake
+		source
+			entityName: fact_occupational_risk
+			schemaName: riscos
+			expressionSource: 'DirectLake - lh_gold'
+

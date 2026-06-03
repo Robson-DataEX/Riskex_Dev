@@ -1,11 +1,11 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "Report",
-    "displayName": "Occupational Risk Report"
+    "type": "SemanticModel",
+    "displayName": "Occupational Risk Semantic Modelo"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "d99a795b-19d9-a608-4226-b78594597d3c"
+    "logicalId": "63b39ad8-fe43-b86b-459a-e9910effe3e1"
   }
 }

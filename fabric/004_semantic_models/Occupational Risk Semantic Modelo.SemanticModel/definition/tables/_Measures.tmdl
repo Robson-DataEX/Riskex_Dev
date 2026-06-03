@@ -1,0 +1,103 @@
+table _Measures
+	lineageTag: 3ab15f7e-3c2f-4f39-89f7-9debc9e465eb
+
+	measure 'Active Risks' =
+			CALCULATE(COUNTROWS(fact_occupational_risk),
+			                fact_occupational_risk[Eliminated]=FALSE())
+			                +0
+		formatString: 0
+		lineageTag: 19240116-8832-45c4-a5c9-5ba6fdd61f91
+
+	measure 'Active Risks Mitigated' =
+			CALCULATE(COUNTROWS(fact_occupational_risk),
+			                            fact_occupational_risk[Eliminated]=FALSE(),
+			                        USERELATIONSHIP(fact_occupational_risk[MitigatedClassId],language_riskclass[Id]))+0
+		formatString: 0
+		lineageTag: a362ddcf-bad8-4865-a5fb-d15882c28470
+
+	measure 'Active Risks RRN' = ```
+			CALCULATE(COUNTROWS(fact_occupational_risk), 
+			fact_occupational_risk[Eliminated]=FALSE(),
+			USERELATIONSHIP(language_riskclass[Id],fact_occupational_risk[LinearClassId]))+0
+			```
+		formatString: 0
+		lineageTag: aff1d4c4-dcc7-4a27-90e8-144a24c97c6f
+
+	measure 'Active Risks RRN Acumulative' =
+			
+			CALCULATE(
+			    COUNTROWS(fact_occupational_risk),
+			    fact_occupational_risk[Eliminated]=FALSE(),
+			    USERELATIONSHIP(language_riskclass[Id], fact_occupational_risk[LinearClassId]),
+			    FILTER(
+			        ALL(dim_calendar[DateRef]),
+			        dim_calendar[DateRef] <= MAX(dim_calendar[DateRef])
+			    )
+			) + 0
+		formatString: 0
+		lineageTag: 0170f798-8fce-46f4-91db-b43724a6102e
+
+	measure 'Active Risks RRN Mitigated' =
+			CALCULATE(COUNTROWS(fact_occupational_risk),
+			 fact_occupational_risk[Eliminated]=FALSE(),
+			 USERELATIONSHIP(language_riskclass[Id],fact_occupational_risk[LinearMitigatedClassId]))+0
+		formatString: 0
+		lineageTag: 8afb853e-e9b0-48b0-90c6-f3c8c076154f
+
+	measure 'Occupational Risks Historicals' = ```
+			
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_occupational_risk_his[OccupationalRiskId] ),
+			    USERELATIONSHIP(fact_occupational_risk_his[MitigatedClassId],language_riskclass[Id]),
+			    fact_occupational_risk[Eliminated]=FALSE(),
+			    fact_occupational_risk_his[Active]=TRUE(),
+			    fact_occupational_risk_his[status]<>-1,
+			    fact_occupational_risk_his[StartDate] <= MAX ( dim_calendar[DateRef] ),
+			    ISBLANK ( fact_occupational_risk_his[EndDate] ) ||
+			    fact_occupational_risk_his[EndDate] >= EOMONTH ( MAX ( dim_calendar[DateRef] ), 0 )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 349a5e18-0116-41ec-9232-61ec0c74a41b
+
+	measure 'Occupational Risks Historicals Acumulative' = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT (fact_occupational_risk_his[OccupationalRiskId] ),
+			    USERELATIONSHIP(fact_occupational_risk_his[MitigatedClassId], language_riskclass[Id]),
+			    fact_occupational_risk_his[Eliminated] = FALSE(),
+			    fact_occupational_risk_his[Active]=TRUE(),
+			    fact_occupational_risk_his[status]<>-1,
+			    FILTER (
+			        ALL ( dim_calendar[DateRef] ),
+			        dim_calendar[DateRef] <= MAX ( dim_calendar[DateRef] )
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 995cec4e-234f-465b-845d-36b40e982766
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: b359f76b-b44c-4188-b5bf-bcc21344fc4a
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t])
+				in
+				  Source
+
+	annotation PBI_ResultType = Table
+

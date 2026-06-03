@@ -1,0 +1,68 @@
+relationship ad7da34a-228b-8c01-1058-c7eb81c2d4e1
+	fromColumn: fact_occupational_risk.CreationDate
+	toColumn: dim_calendar.DateRef
+
+relationship 30d6fe97-e0d7-67f7-6f87-4a944c62ab1d
+	fromColumn: fact_occupational_risk_his.StartDate
+	toColumn: dim_calendar.DateRef
+
+relationship afaa6cb5-cd04-044f-ca69-eb6a7f051763
+	isActive: false
+	fromColumn: fact_occupational_risk.UpdateDate
+	toColumn: dim_calendar.DateRef
+
+relationship 1c018df2-1224-059f-70bc-ebee02c9c569
+	isActive: false
+	fromColumn: fact_occupational_risk_his.EndDate
+	toColumn: dim_calendar.DateRef
+
+relationship 77319b01-e381-b3d9-d135-0a2dbfd76cfe
+	fromColumn: fact_occupational_risk.ClassId
+	toColumn: dim_riskclass.Id
+
+relationship 596744ff-1a57-e03e-b438-b9196f72504b
+	fromColumn: fact_occupational_risk_his.UnitId
+	toColumn: dim_unit.UnitId
+
+relationship d390b824-63b9-e561-5e4f-f6e728b27b68
+	fromColumn: fact_occupational_risk.UnitId
+	toColumn: dim_unit.UnitId
+
+relationship 21d4c21a-070a-127a-ff91-9e672395f72a
+	fromColumn: fact_occupational_risk_his.ClassId
+	toColumn: language_riskclass.Id
+
+relationship d8905bdb-41e1-5e57-2521-bbece2f9fc16
+	isActive: false
+	fromColumn: fact_occupational_risk_his.LinearClassId
+	toColumn: language_riskclass.Id
+
+relationship a97d9296-4215-2f46-b599-d8b90f3ed407
+	isActive: false
+	fromColumn: fact_occupational_risk_his.MitigatedClassId
+	toColumn: language_riskclass.Id
+
+relationship fca53752-f712-d00c-c606-08cb180f0469
+	isActive: false
+	fromColumn: fact_occupational_risk_his.LinearMitigatedClassId
+	toColumn: language_riskclass.Id
+
+relationship bcbd26f6-9000-f8fc-e425-2e47ba348ef6
+	fromColumn: fact_occupational_risk.ClassId
+	toColumn: language_riskclass.Id
+
+relationship 9db13995-5d90-f26f-6c1f-b1fb552858cf
+	isActive: false
+	fromColumn: fact_occupational_risk.LinearClassId
+	toColumn: language_riskclass.Id
+
+relationship d374c5e5-957b-82ab-e1c2-74b7e4c0ee4e
+	isActive: false
+	fromColumn: fact_occupational_risk.LinearMitigatedClassId
+	toColumn: language_riskclass.Id
+
+relationship 686f94b6-242c-a226-3b4b-74c1f9a10924
+	isActive: false
+	fromColumn: fact_occupational_risk.MitigatedClassId
+	toColumn: language_riskclass.Id
+

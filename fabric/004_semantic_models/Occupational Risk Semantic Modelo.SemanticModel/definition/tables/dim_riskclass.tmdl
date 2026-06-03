@@ -1,0 +1,108 @@
+table dim_riskclass
+	lineageTag: 82165e6b-b19f-4631-96c7-802a821b1e42
+	sourceLineageTag: [riscos].[dim_riskclass]
+
+	column Id
+		dataType: int64
+		formatString: 0
+		lineageTag: ef55d336-ecd6-4003-bec8-f68db8feef55
+		sourceLineageTag: Id
+		summarizeBy: none
+		sourceColumn: Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Peso
+		dataType: int64
+		formatString: 0
+		lineageTag: b54365dc-813c-4400-8330-bd92d1657e43
+		sourceLineageTag: Peso
+		summarizeBy: none
+		sourceColumn: Peso
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClasseAceitavel
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e00c2920-26ca-4991-a804-af3ed1ce1dd0
+		sourceLineageTag: ClasseAceitavel
+		summarizeBy: none
+		sourceColumn: ClasseAceitavel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Inicio
+		dataType: int64
+		formatString: 0
+		lineageTag: 92b4accb-e97b-4bc9-8dde-c6bf68ef5ac7
+		sourceLineageTag: Inicio
+		summarizeBy: none
+		sourceColumn: Inicio
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fim
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f20554d-b437-459c-9f17-e110d227f9ee
+		sourceLineageTag: Fim
+		summarizeBy: none
+		sourceColumn: Fim
+
+		annotation SummarizationSetBy = Automatic
+
+	column CorFundo
+		dataType: string
+		lineageTag: e6f0a70e-013c-497f-b590-f72e673493d7
+		sourceLineageTag: CorFundo
+		summarizeBy: none
+		sourceColumn: CorFundo
+
+		annotation SummarizationSetBy = Automatic
+
+	column CorTexto
+		dataType: string
+		lineageTag: 5bdf5369-0dae-4904-b9aa-66eb2d9a88c9
+		sourceLineageTag: CorTexto
+		summarizeBy: none
+		sourceColumn: CorTexto
+
+		annotation SummarizationSetBy = Automatic
+
+	column insert_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fa57b4d7-0392-4cd7-8346-241c587d2c07
+		sourceLineageTag: insert_date
+		summarizeBy: none
+		sourceColumn: insert_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 74db323d-2c85-43ba-baa3-6343eac8f703
+		sourceLineageTag: update_date
+		summarizeBy: none
+		sourceColumn: update_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column hash_row
+		dataType: string
+		lineageTag: 9b7c4005-1d2e-4ad8-beac-11b963df2b1b
+		sourceLineageTag: hash_row
+		summarizeBy: none
+		sourceColumn: hash_row
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_riskclass = entity
+		mode: directLake
+		source
+			entityName: dim_riskclass
+			schemaName: riscos
+			expressionSource: 'DirectLake - lh_gold'
+
