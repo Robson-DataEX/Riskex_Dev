@@ -16,16 +16,16 @@
 
 # MARKDOWN ********************
 
-# # Tabela: riscos.dim_dim_language_risk_class
+# # Tabela: riscos.fact_occupational_risk_safety_map
 # ## Objetivo:
-# Tabela responsável pela tradução ou internacionalização das descrições das Classes de Risco, permitindo que os textos sejam exibidos em diferentes idiomas no sistema
+# Tabela de relacionamento entre MapaSegurancaOcupacional e RiscoOcupacional, indicando quais riscos fazem parte de um determinado mapa de segurança, sendo Mapa 1 - N Riscos
 # 
 # -------------
 # 
 # #### Histórico de alterações
 # | Data | Desenvolvido por | Modificações |
 # |---|---|---|
-# | 18/06/2026 | Robson Mazzarotto| Criação do notebook |
+# | 01/07/2026 | Robson Mazzarotto| Criação do notebook |
 
 # MARKDOWN ********************
 
@@ -97,13 +97,13 @@ write_table_model = ""
  
 container = 'lh_gold'
 target_schema = 'riscos'
-table_name = 'dim_dim_language_risk_class'
+table_name = 'fact_occupational_risk_safety_map'
 
 delta_table_name = f"{workspace}.{container}.{target_schema}.{table_name}"
  
 delta_file = f"abfss://{workspace}@onelake.dfs.fabric.microsoft.com/{container}.Lakehouse/Tables/{target_schema}/{table_name}"
  
-merge_columns = "Id,IdiomaId"
+merge_columns = "Id"
 partition_columns = 'N/A'
 table_type = 'managed' #managed or external
 
@@ -133,14 +133,36 @@ source_dataframe = spark.sql(f"""
 
 SELECT 
     Id,
-    IdiomaId,
-    Descricao,
-    Criterio,
-    ClasseRiscoIdiomaId,
+    MapaSegurancaId,
+    RiscoOcupacionalId,
+    Unidade,
+    Perigo,
+    ProbabilidadeId,
+    ProbabilidadeCorFundo,
+    ProbabilidadeCorTexto,
+    ProbabilidadePeso,
+    ProbabilidadePosControleId,
+    ProbabilidadePosControleCorFundo,
+    ProbabilidadePosControleCorTexto,
+    ProbabilidadePosControlePeso,
+    SeveridadeId,
+    SeveridadeCorFundo,
+    SeveridadeCorTexto,
+    SeveridadePeso,
+    ClasseId,
+    ClasseCorFundo,
+    ClasseCorTexto,
+    ClassePeso,
+    ClassePosControleId,
+    ClassePosControleCorFundo,
+    ClassePosControleCorTexto,
+    ClassePosControlePeso,
+    Evidencias,
+    Deletado,
     insert_date,
     update_date,
     hash_row
-FROM {workspace}.lh_silver.riscos.classe_risco_idioma
+FROM {workspace}.lh_silver.riscos.mapa_seguranca_risco_ocupacional
 
 """)
 

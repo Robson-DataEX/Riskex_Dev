@@ -16,17 +16,16 @@
 
 # MARKDOWN ********************
 
-# 
-# # Tabela: riscos.language_risk_class
+# # Tabela: riscos.dim_language_danger
 # ## Objetivo:
-# Esta tabela contém as linguagem em Portugues, Espanhol e Inglês
+# Tabela de tradução das descrições dos perigos para diferentes idiomas
 # 
 # -------------
 # 
 # #### Histórico de alterações
 # | Data | Desenvolvido por | Modificações |
 # |---|---|---|
-# | 02/04/2026 | Robson Mazzarotto| Criação do notebook |
+# | 01/07/2026 | Robson Mazzarotto| Criação do notebook |
 
 # MARKDOWN ********************
 
@@ -98,7 +97,7 @@ write_table_model = ""
  
 container = 'lh_gold'
 target_schema = 'riscos'
-table_name = 'language_risk_class'
+table_name = 'dim_language_danger'
 
 delta_table_name = f"{workspace}.{container}.{target_schema}.{table_name}"
  
@@ -131,21 +130,18 @@ print(f"Tipo de escrita da tabela: {write_table_model}")
 # CELL ********************
 
 source_dataframe = spark.sql(f"""
+
 SELECT 
-    S.Id,
+    Id,
+    IdiomaId,
+    Descricao,
+    Detalhes,
+    PerigoIdiomaId,
+    insert_date,
+    update_date,
+    hash_row
+FROM {workspace}.lh_silver.riscos.perigo_idioma
 
-    MAX(CASE WHEN S.IdiomaId = 1 THEN S.Descricao END) AS ptBR,
-    MAX(CASE WHEN S.IdiomaId = 2 THEN S.Descricao END) AS enUS,
-    MAX(CASE WHEN S.IdiomaId = 3 THEN S.Descricao END) AS esES,
-
-    CASE 
-        WHEN S.Id IN (13,14,15) THEN 'Unacceptable'
-        ELSE 'Acceptable'
-    END AS Tolerability
-
-FROM {workspace}.lh_silver.riscos.classe_risco_idioma S
-WHERE S.Id IN (9,12,13,14,15)
-GROUP BY S.Id
 """)
 
 # METADATA ********************
